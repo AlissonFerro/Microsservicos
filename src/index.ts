@@ -6,14 +6,12 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use('/', createProxyMiddleware({
-    target: 'http://localhost:4001',
+app.use('/api/users', createProxyMiddleware({
+    target: 'http://localhost:4001/api/users',
     changeOrigin: true,
   }));
 
 app.use(express.json());
-
-startOrchestrator(app)
 
 app.use(handleError as any);
 

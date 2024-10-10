@@ -3,6 +3,6 @@ export default interface IUser{
     phone: string,
     password?: string,
     createdAt?: number,
-    updatedAt?: number,
-    deletedAt?: number
+    updatedAt?: number | undefined | null,
+    deletedAt?: number | undefined | null
 }
