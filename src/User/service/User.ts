@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import AppError from "../../Error";
 import IUser from "../interface/IUser";
 import UserRepositories from "../repositories/User";
@@ -12,7 +13,19 @@ export default class UserService{
     }
 
     static async getById(id: string){
-        return await UserRepositories.getById(id);
+        const user = await UserRepositories.getById(id);
+        
+        if(!user) 
+            throw new AppError('Nenhum usuário encontrado', 404);
+
+        return user; 
+    }
+
+    static async getDeleted(id: Types.ObjectId): Promise<IUser>{
+        const user = await UserRepositories.getDeleted(id);
+        if(!user)
+            throw new AppError('Nenhum usuário encontrado', 404);
+        return user;
     }
 
     static async getByName(name: string): Promise<IUser>{ 
@@ -24,7 +37,6 @@ export default class UserService{
     }
 
     static async modify(payload: IUser, id: string){
-        await UserRepositories.getById(id);
         return await UserRepositories.modifyUserById(payload, id);
     }
 

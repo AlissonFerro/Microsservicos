@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import UserService from "../service/User";
 import AppError from "../../Error";
 import IUser from "../interface/IUser";
+import { Types } from "mongoose";
 
 export default class UserController{
     static async getAll(req: Request, res: Response): Promise<any>{
@@ -37,5 +38,26 @@ export default class UserController{
         await UserService.getById(req.params.id);
         await UserService.delete(req.params.id);
         return res.status(200).send('Usuário deletado com sucesso');
+    }
+
+    static async restore(req: Request, res: Response): Promise<void>{
+        const { id } = req.params;
+        
+        const user = await UserService.getDeleted(new Types.ObjectId(id));
+        const now = Date.now();
+
+        await UserService.modify({
+            name: user.name,
+            phone: user.phone,
+            password: user.password,
+            createdAt: user.createdAt,
+            updatedAt: now,
+            deletedAt: null
+        }, id);
+
+        res.status(200).send({ message: "Usuário resetado com sucesso", user: {
+            name: user.name,
+            phone: user.phone
+        }})
     }
 }

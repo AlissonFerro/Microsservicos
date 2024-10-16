@@ -12,6 +12,10 @@ userRouter
         UserMiddleware.validatePhone,
         UserController.create)
 
+    .post('/:id',
+        UserController.restore
+    )
+
     .patch('/:id',
         UserMiddleware.validateNameAndPassword,
         UserMiddleware.validatePhone,

@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import AppError from "../../Error";
 import IUser from "../interface/IUser";
 import { UserModel } from "../model/User";
@@ -24,6 +25,10 @@ export default class UserRepositories{
             throw new AppError('Nenhum usuário encontrado', 404);
         
         return user;
+    }
+
+    static async getDeleted(id: Types.ObjectId): Promise<IUser | null>{
+        return await UserModel.findOne({ _id: id, deletedAt: { $ne: null }});
     }
 
     static async modifyUserById(payload: IUser, id: string){
