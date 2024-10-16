@@ -16,6 +16,7 @@ const serviceMap: Record<string, string> = {
     '/api/users': 'http://localhost:4001/api/users',
     '/api/store': 'http://localhost:4002/api/store',
     '/api/product': 'http://localhost:4002/api/product',
+    '/api/cart': 'http://localhost:4002/api/cart'
 };
 
 app.use((req, res, next) => {
